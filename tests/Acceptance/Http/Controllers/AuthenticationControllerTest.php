@@ -6,8 +6,12 @@ use TestCase;
 
 class AuthenticationControllerTest extends TestCase
 {
-    public function testWorks()
+    public function testGetAuthenticationTokenFromAuthenticationEndpoint()
     {
-        $this->assertTrue(true);
+        $this
+            ->json('GET', '/authenticate')
+            ->seeJson([
+                'token' => 'this-is-a-token'
+            ]);
     }
 }
