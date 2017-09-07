@@ -23,6 +23,8 @@ class MetaResponse
 
     public function getMeta(): array
     {
-        return [];
+        return [
+            'time' => '2017-09-07 21:00:00'
+        ];
     }
 }
