@@ -4,15 +4,18 @@ namespace App\Http\Response;
 
 class MetaResponse
 {
+    private $body;
+
     public function getBody(): array
     {
         return [
+            $this->body,
             'meta' => []
         ];
     }
 
-    public function setBody(array $data)
+    public function setBody(array $body)
     {
-        return $data;
+        $this->body = $body;
     }
 }

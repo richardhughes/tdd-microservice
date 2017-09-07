@@ -12,18 +12,19 @@ class MetaResponseTest extends TestCase
         $this->assertInstanceOf(MetaResponse::class, new MetaResponse());
     }
 
-    public function testGetBodyContainsMetaData()
+    public function testBodySetIsReturnedInGetBody()
     {
         $metaResponse = new MetaResponse();
-        $this->assertSame([
-            'meta' => []
-        ], $metaResponse->getBody());
-    }
+        $metaResponse->setBody([
+            'test' => 'data'
+        ]);
 
-    public function testWeCanSetDataOnTheResponse()
-    {
-        $metaResponse = new MetaResponse();
-        $this->assertSame([], $metaResponse->setBody([]));
+        $this->assertSame([
+            [
+                'test' => 'data'
+            ], 'meta' => [
+            ]
+        ], $metaResponse->getBody());
     }
 
 }
