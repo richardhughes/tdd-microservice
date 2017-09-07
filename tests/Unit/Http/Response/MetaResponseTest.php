@@ -45,4 +45,11 @@ class MetaResponseTest extends TestCase
         $meta = $body['meta'];
         $this->assertSame('2017-09-07 21:00:00', $meta['time']);
     }
+
+    public function testGetMetaDataReturnsArray()
+    {
+        $metaResponse = new MetaResponse();
+        $meta = $metaResponse->getMeta();
+        $this->assertSame([], $meta);
+    }
 }
