@@ -9,14 +9,13 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use Laravel\Lumen\Routing\Controller as BaseController;
 
-class AuthenticateController extends BaseController
+class AuthenticateController extends Controller
 {
 
     public function index()
     {
-        return response()->json([
+        return $this->successJsonResponse([
             'token' => 'this-is-a-token',
             'meta' => [
                 'time' => Carbon::now()->toDateTimeString()
@@ -26,7 +25,7 @@ class AuthenticateController extends BaseController
 
     public function store()
     {
-        return response()->json([]);
+        return $this->successJsonResponse([]);
     }
 
 }
