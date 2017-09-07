@@ -10,4 +10,9 @@ class MetaResponse
             'meta' => []
         ];
     }
+
+    public function setBody(array $data)
+    {
+        return $data;
+    }
 }
