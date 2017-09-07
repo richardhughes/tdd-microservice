@@ -27,4 +27,10 @@ class MetaResponseTest extends TestCase
         ], $metaResponse->getBody());
     }
 
+    public function testMetaDataContainsTimeValue()
+    {
+        $metaResponse = new MetaResponse();
+        $body = $metaResponse->getBody();
+        $this->assertArrayHasKey('time', $body['meta']);
+    }
 }
