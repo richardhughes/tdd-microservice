@@ -35,4 +35,17 @@ class AuthenticationControllerTest extends TestCase
             ->json('POST', '/authenticate')
             ->seeStatusCode(200);
     }
+
+    public function testCreateAuthenticationTokenEndpointReturnsToken()
+    {
+        Carbon::setTestNow('2017-09-07 21:00:00');
+        $this
+            ->json('POST', '/authenticate')
+            ->seeJson([
+                'token' => 'this-is-a-token',
+                'meta' => [
+                    'time' => Carbon::now()->toDateTimeString()
+                ]
+            ]);
+    }
 }
