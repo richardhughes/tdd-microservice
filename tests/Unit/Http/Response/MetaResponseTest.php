@@ -28,7 +28,6 @@ class MetaResponseTest extends TestCase
             'test' => 'data'
         ];
 
-//        $metaResponse = new MetaResponse();
         $this->metaResponse->setBody($body);
 
         $this->assertSame([
@@ -41,7 +40,6 @@ class MetaResponseTest extends TestCase
 
     public function testMetaDataContainsTimeValue()
     {
-//        $metaResponse = new MetaResponse();
         $body = $this->metaResponse->getBody();
         $this->assertArrayHasKey('time', $body['meta']);
     }
@@ -49,25 +47,29 @@ class MetaResponseTest extends TestCase
     public function testMetaDataContainsTheCorrectTimeValue()
     {
         Carbon::setTestNow('2017-09-07 21:00:00');
-//        $metaResponse = new MetaResponse();
         $body = $this->metaResponse->getBody();
         $meta = $body['meta'];
         $this->assertSame('2017-09-07 21:00:00', $meta['time']);
     }
 
-    public function testGetMetaDataContainsTheCorrectTimeValue()
+    /**
+     * @dataProvider timeDataProvider
+     * @param $time
+     */
+    public function testGetMetaDataHasCorrectTime($time)
     {
-        Carbon::setTestNow('2017-09-07 21:00:00');
-//        $metaResponse = new MetaResponse();
+        Carbon::setTestNow($time);
         $meta = $this->metaResponse->getMeta();
-        $this->assertSame('2017-09-07 21:00:00', $meta['time']);
+        $this->assertSame($time, $meta['time']);
     }
 
-    public function testGetMetaDataContainsFutureTimeValue()
+    public function timeDataProvider(): array
     {
-        Carbon::setTestNow('2019-09-07 21:00:00');
-//        $metaResponse = new MetaResponse();
-        $meta = $this->metaResponse->getMeta();
-        $this->assertSame('2019-09-07 21:00:00', $meta['time']);
+        return [
+            ['2016-09-07 21:00:00'],
+            ['2017-09-07 21:00:00'],
+            ['2018-09-07 21:00:00'],
+            ['2019-09-07 21:00:00']
+        ];
     }
 }
