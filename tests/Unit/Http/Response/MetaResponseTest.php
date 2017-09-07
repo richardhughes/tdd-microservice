@@ -44,12 +44,16 @@ class MetaResponseTest extends TestCase
         $this->assertArrayHasKey('time', $body['meta']);
     }
 
-    public function testMetaDataContainsTheCorrectTimeValue()
+    /**
+     * @dataProvider timeDataProvider
+     * @param $time
+     */
+    public function testMetaDataInBodyContainsTheCorrectTimes($time)
     {
-        Carbon::setTestNow('2017-09-07 21:00:00');
+        Carbon::setTestNow($time);
         $body = $this->metaResponse->getBody();
         $meta = $body['meta'];
-        $this->assertSame('2017-09-07 21:00:00', $meta['time']);
+        $this->assertSame($time, $meta['time']);
     }
 
     /**
