@@ -25,7 +25,7 @@ class MetaResponseTest extends TestCase
         $this->assertSame([
             $body,
             'meta' => [
-                'time' => ''
+                'time' => '2017-09-07 21:00:00'
             ]
         ], $metaResponse->getBody());
     }
