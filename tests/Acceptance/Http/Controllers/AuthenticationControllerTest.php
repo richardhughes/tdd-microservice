@@ -28,4 +28,11 @@ class AuthenticationControllerTest extends TestCase
                 ]
             ]);
     }
+
+    public function testCreateAuthenticationTokenEndpointExists()
+    {
+        $this
+            ->json('POST', '/authenticate')
+            ->seeStatusCode(200);
+    }
 }
