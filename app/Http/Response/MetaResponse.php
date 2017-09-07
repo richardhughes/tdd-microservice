@@ -20,4 +20,9 @@ class MetaResponse
     {
         $this->body = $body;
     }
+
+    public function getMeta(): array
+    {
+        return [];
+    }
 }
