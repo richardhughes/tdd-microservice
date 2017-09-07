@@ -52,4 +52,12 @@ class MetaResponseTest extends TestCase
         $meta = $metaResponse->getMeta();
         $this->assertSame([], $meta);
     }
+
+    public function testGetMetaDataContainsTheCorrectTimeValue()
+    {
+        Carbon::setTestNow('2017-09-07 21:00:00');
+        $metaResponse = new MetaResponse();
+        $meta = $metaResponse->getMeta();
+        $this->assertSame('2017-09-07 21:00:00', $meta['time']);
+    }
 }
