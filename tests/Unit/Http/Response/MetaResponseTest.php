@@ -12,12 +12,6 @@ class MetaResponseTest extends TestCase
         $this->assertInstanceOf(MetaResponse::class, new MetaResponse());
     }
 
-    public function testGetBodyReturnsArray()
-    {
-        $metaResponse = new MetaResponse();
-        $this->assertSame([], $metaResponse->getBody());
-    }
-
     public function testGetBodyContainsMetaData()
     {
         $metaResponse = new MetaResponse();

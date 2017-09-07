@@ -6,6 +6,8 @@ class MetaResponse
 {
     public function getBody(): array
     {
-        return [];
+        return [
+            'meta' => []
+        ];
     }
 }
