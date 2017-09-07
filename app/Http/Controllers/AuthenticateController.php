@@ -24,4 +24,9 @@ class AuthenticateController extends BaseController
         ]);
     }
 
+    public function store()
+    {
+        return response()->json([]);
+    }
+
 }
