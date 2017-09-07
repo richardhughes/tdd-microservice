@@ -18,4 +18,12 @@ class MetaResponseTest extends TestCase
         $this->assertSame([], $metaResponse->getBody());
     }
 
+    public function testGetBodyContainsMetaData()
+    {
+        $metaResponse = new MetaResponse();
+        $this->assertSame([
+            'meta' => []
+        ], $metaResponse->getBody());
+    }
+
 }
