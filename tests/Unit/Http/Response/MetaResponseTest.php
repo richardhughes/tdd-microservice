@@ -23,6 +23,7 @@ class MetaResponseTest extends TestCase
             [
                 'test' => 'data'
             ], 'meta' => [
+                'time' => ''
             ]
         ], $metaResponse->getBody());
     }

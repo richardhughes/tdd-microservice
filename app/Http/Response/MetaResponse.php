@@ -10,7 +10,9 @@ class MetaResponse
     {
         return [
             $this->body,
-            'meta' => []
+            'meta' => [
+                'time' => ''
+            ]
         ];
     }
 
