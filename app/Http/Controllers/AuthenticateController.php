@@ -25,7 +25,12 @@ class AuthenticateController extends Controller
 
     public function store()
     {
-        return $this->successJsonResponse([]);
+        return $this->successJsonResponse([
+            'token' => 'this-is-a-token',
+            'meta' => [
+                'time' => Carbon::now()->toDateTimeString()
+            ]
+        ]);
     }
 
 }
