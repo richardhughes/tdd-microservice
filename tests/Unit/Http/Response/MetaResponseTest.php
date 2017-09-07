@@ -14,15 +14,16 @@ class MetaResponseTest extends TestCase
 
     public function testBodySetIsReturnedInGetBody()
     {
-        $metaResponse = new MetaResponse();
-        $metaResponse->setBody([
+        $body = [
             'test' => 'data'
-        ]);
+        ];
+
+        $metaResponse = new MetaResponse();
+        $metaResponse->setBody($body);
 
         $this->assertSame([
-            [
-                'test' => 'data'
-            ], 'meta' => [
+            $body,
+            'meta' => [
                 'time' => ''
             ]
         ], $metaResponse->getBody());
