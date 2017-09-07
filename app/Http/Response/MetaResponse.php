@@ -12,9 +12,7 @@ class MetaResponse
     {
         return [
             $this->body,
-            'meta' => [
-                'time' => '2017-09-07 21:00:00'
-            ]
+            'meta' => $this->getMeta()
         ];
     }
 
