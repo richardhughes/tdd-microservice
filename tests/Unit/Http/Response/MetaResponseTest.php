@@ -20,4 +20,10 @@ class MetaResponseTest extends TestCase
         ], $metaResponse->getBody());
     }
 
+    public function testWeCanSetDataOnTheResponse()
+    {
+        $metaResponse = new MetaResponse();
+        $this->assertSame([], $metaResponse->setBody([]));
+    }
+
 }
