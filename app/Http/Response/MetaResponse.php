@@ -2,6 +2,8 @@
 
 namespace App\Http\Response;
 
+use Carbon\Carbon;
+
 class MetaResponse
 {
     private $body;
@@ -24,7 +26,7 @@ class MetaResponse
     public function getMeta(): array
     {
         return [
-            'time' => '2017-09-07 21:00:00'
+            'time' => Carbon::now()->toDateTimeString()
         ];
     }
 }
