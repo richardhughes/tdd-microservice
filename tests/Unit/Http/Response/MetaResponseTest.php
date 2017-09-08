@@ -74,9 +74,22 @@ class MetaResponseTest extends TestCase
     }
 
 
-    public function testMetaDataContainsHash()
+    public function metaDataStructureDataProvider(): array
+    {
+        return [
+            ['time'],
+            ['hash']
+        ];
+    }
+
+    /**
+     * @param $key
+     * @dataProvider metaDataStructureDataProvider
+     */
+    public function testMetaDataContainsCorrectKeys($key)
     {
         $meta = $this->metaResponse->getMeta();
-        $this->assertArrayHasKey('hash', $meta);
+        $this->assertArrayHasKey($key, $meta);
     }
+
 }
