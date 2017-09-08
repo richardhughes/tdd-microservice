@@ -4,7 +4,6 @@ namespace Tests\Unit\Http\Response;
 
 use App\Http\Response\MetaResponse;
 use Carbon\Carbon;
-use Mockery;
 use TestCase;
 
 class MetaResponseTest extends TestCase
@@ -44,16 +43,6 @@ class MetaResponseTest extends TestCase
         $this->assertSame($time, $meta['time']);
     }
 
-    public function timeDataProvider(): array
-    {
-        return [
-            ['2016-09-07 21:00:00'],
-            ['2017-09-07 21:00:00'],
-            ['2018-09-07 21:00:00'],
-            ['2019-09-07 21:00:00']
-        ];
-    }
-
     /**
      * @dataProvider highLevelStructureDataProvider
      */
@@ -63,23 +52,6 @@ class MetaResponseTest extends TestCase
         $response = $this->metaResponse->toResponse();
 
         $this->assertArrayHasKey($key, $response);
-    }
-
-    public function highLevelStructureDataProvider(): array
-    {
-        return [
-            ['payload'],
-            ['meta']
-        ];
-    }
-
-
-    public function metaDataStructureDataProvider(): array
-    {
-        return [
-            ['time'],
-            ['hash']
-        ];
     }
 
     /**
@@ -92,4 +64,29 @@ class MetaResponseTest extends TestCase
         $this->assertArrayHasKey($key, $meta);
     }
 
+    public function highLevelStructureDataProvider(): array
+    {
+        return [
+            ['payload'],
+            ['meta']
+        ];
+    }
+
+    public function metaDataStructureDataProvider(): array
+    {
+        return [
+            ['time'],
+            ['hash']
+        ];
+    }
+
+    public function timeDataProvider(): array
+    {
+        return [
+            ['2016-09-07 21:00:00'],
+            ['2017-09-07 21:00:00'],
+            ['2018-09-07 21:00:00'],
+            ['2019-09-07 21:00:00']
+        ];
+    }
 }
