@@ -10,8 +10,13 @@ class MetaResponse
 
     public function getBody(): array
     {
+        return $this->body;
+    }
+
+    public function toResponse(): array
+    {
         return [
-            $this->body,
+            'payload' => $this->getBody(),
             'meta' => $this->getMeta()
         ];
     }
@@ -24,7 +29,8 @@ class MetaResponse
     public function getMeta(): array
     {
         return [
-            'time' => Carbon::now()->toDateTimeString()
+            'time' => Carbon::now()->toDateTimeString(),
+            'hash' => ''
         ];
     }
 }

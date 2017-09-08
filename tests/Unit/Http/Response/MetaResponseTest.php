@@ -30,30 +30,7 @@ class MetaResponseTest extends TestCase
 
         $this->metaResponse->setBody($body);
 
-        $this->assertSame([
-            $body,
-            'meta' => [
-                'time' => '2017-09-07 21:00:00'
-            ]
-        ], $this->metaResponse->getBody());
-    }
-
-    public function testMetaDataContainsTimeValue()
-    {
-        $body = $this->metaResponse->getBody();
-        $this->assertArrayHasKey('time', $body['meta']);
-    }
-
-    /**
-     * @dataProvider timeDataProvider
-     * @param $time
-     */
-    public function testMetaDataInBodyContainsTheCorrectTimes($time)
-    {
-        Carbon::setTestNow($time);
-        $body = $this->metaResponse->getBody();
-        $meta = $body['meta'];
-        $this->assertSame($time, $meta['time']);
+        $this->assertSame($body, $this->metaResponse->getBody());
     }
 
     /**
@@ -75,5 +52,31 @@ class MetaResponseTest extends TestCase
             ['2018-09-07 21:00:00'],
             ['2019-09-07 21:00:00']
         ];
+    }
+
+    /**
+     * @dataProvider highLevelStructureDataProvider
+     */
+    public function testToResponseHasCorrectHighLevelStructure($key)
+    {
+        $this->metaResponse->setBody([]);
+        $response = $this->metaResponse->toResponse();
+
+        $this->assertArrayHasKey($key, $response);
+    }
+
+    public function highLevelStructureDataProvider(): array
+    {
+        return [
+            ['payload'],
+            ['meta']
+        ];
+    }
+
+
+    public function testMetaDataContainsHash()
+    {
+        $meta = $this->metaResponse->getMeta();
+        $this->assertArrayHasKey('hash', $meta);
     }
 }
