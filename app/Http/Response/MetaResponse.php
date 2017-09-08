@@ -30,7 +30,7 @@ class MetaResponse
     {
         return [
             'time' => Carbon::now()->toDateTimeString(),
-            'hash' => ''
+            'hash' => 'd751713988987e9331980363e24189ce'
         ];
     }
 }
