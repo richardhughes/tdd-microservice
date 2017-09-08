@@ -64,14 +64,36 @@ class MetaResponseTest extends TestCase
         $this->assertArrayHasKey($key, $meta);
     }
 
-    public function testMetaDataHashContainsHashedBodyValue()
+    /**
+     * @dataProvider hashDataProvider
+     * @param $body
+     */
+    public function testMetaDataHashContainsHashedBodyValue($body)
     {
-        $body = [];
-
         $this->metaResponse->setBody($body);
         $meta = $this->metaResponse->getMeta();
         $this->assertSame(md5(json_encode($body)), $meta['hash']);
+    }
 
+    public function hashDataProvider(): array
+    {
+        return [
+            'Test blank array produces a correct hash' => [
+                []
+            ],
+            'Test single array produces correct hash' => [
+                [
+                    'token' => 'this-is-a-token'
+                ]
+            ],
+            'Test nested array produces the correct hash' => [
+                [
+                    'item' => [
+                        'test' => 'nested'
+                    ]
+                ]
+            ]
+        ];
     }
 
     public function highLevelStructureDataProvider(): array
