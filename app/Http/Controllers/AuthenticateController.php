@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AuthenticateController extends Controller
 {
@@ -23,10 +24,12 @@ class AuthenticateController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
         return $this->successJsonResponse([
             'token' => 'this-is-a-token',
+            'username' => $request->input('username'),
+            'password' => $request->input('password'),
             'meta' => [
                 'time' => Carbon::now()->toDateTimeString()
             ]
