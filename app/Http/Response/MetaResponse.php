@@ -2,9 +2,10 @@
 
 namespace App\Http\Response;
 
+use App\Http\Response\Contract\Response;
 use Carbon\Carbon;
 
-class MetaResponse
+class MetaResponse implements Response
 {
     private $body;
 
