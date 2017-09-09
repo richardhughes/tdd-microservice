@@ -14,7 +14,7 @@ git:
 
 # Define the php versions against we want to test our code
 php:
-    - 7.0
+    - 7.0.22
     - 7.1
 
 
