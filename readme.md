@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/richardhughes/tdd-microservice.svg)](https://travis-ci.org/richardhughes/tdd-microservice)
+[![Coverage Status](https://coveralls.io/repos/github/richardhughes/tdd-microservice/badge.svg?branch=master)](https://coveralls.io/github/richardhughes/tdd-microservice?branch=master)
