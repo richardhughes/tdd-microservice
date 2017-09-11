@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class AuthenticateController extends Controller
 {
-
     public function index()
     {
         return $this->withSuccessResponse([
