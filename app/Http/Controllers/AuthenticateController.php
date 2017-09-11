@@ -22,6 +22,7 @@ class AuthenticateController extends Controller
     {
         $this->validate($request, [
             'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
         return $this->successJsonResponse([
