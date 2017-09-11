@@ -17,7 +17,7 @@ class Controller extends BaseController
         $this->carbon = $carbon;
     }
 
-    protected function successJsonResponse(array $data)
+    protected function withSuccessResponse(array $data)
     {
         return response()
             ->json($data)

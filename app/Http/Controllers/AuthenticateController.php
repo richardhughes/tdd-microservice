@@ -10,7 +10,7 @@ class AuthenticateController extends Controller
 
     public function index()
     {
-        return $this->successJsonResponse([
+        return $this->withSuccessResponse([
             'token' => 'this-is-a-token',
             'meta' => [
                 'time' => Carbon::now()->toDateTimeString()
@@ -25,7 +25,7 @@ class AuthenticateController extends Controller
             'password' => 'required|string',
         ]);
 
-        return $this->successJsonResponse([
+        return $this->withSuccessResponse([
             'token' => 'this-is-a-token',
             'username' => $request->input('username'),
             'password' => $request->input('password'),

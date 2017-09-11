@@ -2,9 +2,7 @@
 
 namespace Tests\Acceptance\Http\Controllers;
 
-use App\Http\Response\Contract\Response;
 use Carbon\Carbon;
-use Mockery;
 use TestCase;
 
 class AuthenticationControllerTest extends TestCase
