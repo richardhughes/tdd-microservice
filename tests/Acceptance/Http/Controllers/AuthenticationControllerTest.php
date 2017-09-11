@@ -64,21 +64,6 @@ class AuthenticationControllerTest extends TestCase
             ]);
     }
 
-    public function testCreateAuthenticationTokenEndpointReturnsErrorWhenUsernameIsEmpty()
-    {
-        $this
-            ->json('POST', '/authenticate', [
-                'username' => '',
-                'password' => 'securePassword'
-            ])
-            ->seeStatusCode(422)
-            ->seeJson([
-                'username' => [
-                    'The username field is required.'
-                ],
-            ]);
-    }
-
     public function testCreateAuthenticationTokenEndpointReturnsErrorWhenRequiredParametersAreEmpty()
     {
         $this
