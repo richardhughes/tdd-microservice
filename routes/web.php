@@ -17,3 +17,5 @@ $router->get('/', function () use ($router) {
 
 $router->get('/authenticate', 'AuthenticateController@index');
 $router->post('/authenticate', 'AuthenticateController@store');
+
+$router->post('/register', 'RegisterController@store');

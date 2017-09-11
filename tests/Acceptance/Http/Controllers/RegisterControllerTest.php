@@ -10,6 +10,6 @@ class RegisterControllerTest extends TestCase
     {
         $this
             ->json('POST', '/register')
-        ->assertResponseOk();
+            ->assertResponseOk();
     }
 }
