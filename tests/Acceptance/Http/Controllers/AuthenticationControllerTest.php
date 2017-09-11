@@ -37,7 +37,10 @@ class AuthenticationControllerTest extends TestCase
     {
         Carbon::setTestNow('2017-09-07 21:00:00');
         $this
-            ->json('POST', '/authenticate')
+            ->json('POST', '/authenticate', [
+                'username' => 'richardhughes',
+                'password' => 'securePassword'
+            ])
             ->seeStatusCode(200)
             ->seeJson([
                 'token' => 'this-is-a-token',
@@ -58,6 +61,21 @@ class AuthenticationControllerTest extends TestCase
             ->seeJson([
                 'username' => 'richardhughes',
                 'password' => 'securePassword',
+            ]);
+    }
+
+    public function testCreateAuthenticationTokenEndpointReturnsErrorWhenUsernameIsEmpty()
+    {
+        $this
+            ->json('POST', '/authenticate', [
+                'username' => '',
+                'password' => 'securePassword'
+            ])
+            ->seeStatusCode(422)
+            ->seeJson([
+                'username' => [
+                    'The username field is required.'
+                ],
             ]);
     }
 }

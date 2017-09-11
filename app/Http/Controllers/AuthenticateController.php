@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: richie
- * Date: 06/09/17
- * Time: 21:02
- */
 
 namespace App\Http\Controllers;
 
@@ -26,6 +20,10 @@ class AuthenticateController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'username' => 'required|string',
+        ]);
+
         return $this->successJsonResponse([
             'token' => 'this-is-a-token',
             'username' => $request->input('username'),
