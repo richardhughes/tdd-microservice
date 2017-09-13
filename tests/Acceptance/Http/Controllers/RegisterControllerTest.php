@@ -37,4 +37,19 @@ class RegisterControllerTest extends TestCase
                 ]
             ]);
     }
+
+    public function testUserIsCreatedWhenRegistrationIsSuccessful()
+    {
+        $this
+            ->json('POST', '/register', [
+                'username' => 'test@example.com',
+                'password' => 'securePassword'
+            ])
+            ->assertResponseOk();
+
+        $this->seeInDatabase('users',[
+            'username' => 'test@example.com',
+            'password' => 'securePassword'
+        ]);
+    }
 }
