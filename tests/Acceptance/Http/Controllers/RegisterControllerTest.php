@@ -2,6 +2,8 @@
 
 namespace Tests\Acceptance\Http\Controllers;
 
+use Illuminate\Hashing\BcryptHasher;
+use Mockery;
 use TestCase;
 
 class RegisterControllerTest extends TestCase
@@ -47,24 +49,48 @@ class RegisterControllerTest extends TestCase
             ])
             ->assertResponseOk();
 
-        $this->seeInDatabase('users',[
+        $this->seeInDatabase('users', [
             'username' => 'test@example.com',
             'password' => 'securePassword'
         ]);
     }
 
-    public function testUsersPasswordIsHashed()
+    /**
+     * @dataProvider hashedPasswordDataProvider
+     * @param $password
+     */
+    public function testUsersPasswordIsHashed($password)
     {
+        $hash = Mockery::mock(BcryptHasher::class);
+
+        $hashedPassword = app('hash')->make($password);
+        $hash
+            ->shouldReceive('make')
+            ->once()
+            ->with($password)
+            ->andReturn($hashedPassword);
+
+        $this->app->instance(BcryptHasher::class, $hash);
+
         $this
             ->json('POST', '/register', [
                 'username' => 'test@example.com',
-                'password' => 'securePassword'
+                'password' => $password
             ])
             ->assertResponseOk();
 
-        $this->seeInDatabase('users',[
+        $this->seeInDatabase('users', [
             'username' => 'test@example.com',
-            'password' => app('hash')->make('securePassword')
+            'password' => $hashedPassword
         ]);
+    }
+
+    public function hashedPasswordDataProvider(): array
+    {
+        return [
+            ['securePassword'],
+            ['testing123'],
+            ['anotherHashedPassword'],
+        ];
     }
 }

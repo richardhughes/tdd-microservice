@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -11,10 +12,20 @@ class RegisterController extends Controller
      * @var User
      */
     private $user;
+    /**
+     * @var BcryptHasher
+     */
+    private $hasher;
 
-    public function __construct(User $user)
+    /**
+     * RegisterController constructor.
+     * @param User $user
+     * @param BcryptHasher $hash
+     */
+    public function __construct(User $user, BcryptHasher $hash)
     {
         $this->user = $user;
+        $this->hasher = $hash;
     }
 
     public function store(Request $request)
@@ -24,7 +35,12 @@ class RegisterController extends Controller
             'password' => 'required'
         ]);
 
-        $this->user->create($request->only(['username', 'password']));
+        $user = [
+            'username' => $request->input('username'),
+            'password' => $this->hasher->make($request->input('password'))
+        ];
+
+        $this->user->create($user);
 
         $this->withSuccessResponse([]);
     }
