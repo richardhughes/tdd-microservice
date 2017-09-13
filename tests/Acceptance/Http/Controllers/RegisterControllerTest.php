@@ -52,4 +52,19 @@ class RegisterControllerTest extends TestCase
             'password' => 'securePassword'
         ]);
     }
+
+    public function testUsersPasswordIsHashed()
+    {
+        $this
+            ->json('POST', '/register', [
+                'username' => 'test@example.com',
+                'password' => 'securePassword'
+            ])
+            ->assertResponseOk();
+
+        $this->seeInDatabase('users',[
+            'username' => 'test@example.com',
+            'password' => app('hash')->make('securePassword')
+        ]);
+    }
 }
