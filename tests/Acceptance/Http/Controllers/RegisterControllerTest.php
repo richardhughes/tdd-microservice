@@ -6,6 +6,7 @@ use Illuminate\Hashing\BcryptHasher;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery;
 use TestCase;
+use Tymon\JWTAuth\JWTAuth;
 
 class RegisterControllerTest extends TestCase
 {
@@ -60,8 +61,20 @@ class RegisterControllerTest extends TestCase
 
     public function testRegisterEndpointReturnsToken()
     {
+        $jwt = Mockery::mock(JWTAuth::class);
+
+        $exampleToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi";
+
+        $this->app->instance(JWTAuth::class, $jwt);
+        $jwt
+            ->shouldReceive('fromUser')
+            ->once()
+            ->andReturn($exampleToken);
+
         $this->successfulRegisterRequest('securePassword')
-            ->seeJson(['token' => 'this-is-a-token']);
+            ->seeJson([
+                'token' => $exampleToken
+            ]);
     }
 
     private function successfulRegisterRequest($password)

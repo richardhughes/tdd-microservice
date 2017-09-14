@@ -99,7 +99,13 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
-$app->withFacades();
+$app->withFacades(true, [
+    Tymon\JWTAuth\Facades\JWTAuth::class => 'JWTAuth',
+    Tymon\JWTAuth\Facades\JWTFactory::class => 'JWTFactory'
+]);
+
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+
 $app->withEloquent();
 
 return $app;
