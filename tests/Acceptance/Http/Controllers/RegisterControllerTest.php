@@ -3,11 +3,14 @@
 namespace Tests\Acceptance\Http\Controllers;
 
 use Illuminate\Hashing\BcryptHasher;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery;
 use TestCase;
 
 class RegisterControllerTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function testRegisterEndpointExists()
     {
         $this
@@ -38,21 +41,6 @@ class RegisterControllerTest extends TestCase
                     'The password field is required.'
                 ]
             ]);
-    }
-
-    public function testUserIsCreatedWhenRegistrationIsSuccessful()
-    {
-        $this
-            ->json('POST', '/register', [
-                'username' => 'test@example.com',
-                'password' => 'securePassword'
-            ])
-            ->assertResponseOk();
-
-        $this->seeInDatabase('users', [
-            'username' => 'test@example.com',
-            'password' => 'securePassword'
-        ]);
     }
 
     /**
@@ -92,5 +80,16 @@ class RegisterControllerTest extends TestCase
             ['testing123'],
             ['anotherHashedPassword'],
         ];
+    }
+
+    public function testRegisterEndpointReturnsToken()
+    {
+        $this
+            ->json('POST', '/register', [
+                'username' => 'test@example.com',
+                'password' => 'securePassword'
+            ])
+            ->seeStatusCode(200)
+            ->seeJson(['token' => 'this-is-a-token']);
     }
 }
