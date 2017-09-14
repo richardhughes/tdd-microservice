@@ -13,26 +13,17 @@ class RegisterControllerTest extends TestCase
 
     public function testRegisterEndpointExists()
     {
-        $this
-            ->json('POST', '/register', [
-                'username' => 'test@example.com',
-                'password' => 'securePassword'
-            ])
-            ->assertResponseOk();
+        $this->successfulRegisterRequest('securePassword');
     }
 
     public function testRegisterEndpointRequiresEmail()
     {
-        $this
-            ->json('POST', '/register')
-            ->assertResponseStatus(422);
+        $this->validationFailedExpectation();
     }
 
     public function testRegisterEndpointRequiredParameters()
     {
-        $this
-            ->json('POST', '/register')
-            ->seeStatusCode(422)
+        $this->validationFailedExpectation()
             ->seeJson([
                 'username' => [
                     'The username field is required.'
@@ -60,12 +51,7 @@ class RegisterControllerTest extends TestCase
 
         $this->app->instance(BcryptHasher::class, $hash);
 
-        $this
-            ->json('POST', '/register', [
-                'username' => 'test@example.com',
-                'password' => $password
-            ])
-            ->assertResponseOk();
+        $this->successfulRegisterRequest($password);
 
         $this->seeInDatabase('users', [
             'username' => 'test@example.com',
@@ -84,12 +70,24 @@ class RegisterControllerTest extends TestCase
 
     public function testRegisterEndpointReturnsToken()
     {
-        $this
+        $this->successfulRegisterRequest('securePassword')
+            ->seeJson(['token' => 'this-is-a-token']);
+    }
+
+    private function successfulRegisterRequest($password)
+    {
+        return $this
             ->json('POST', '/register', [
                 'username' => 'test@example.com',
-                'password' => 'securePassword'
+                'password' => $password
             ])
-            ->seeStatusCode(200)
-            ->seeJson(['token' => 'this-is-a-token']);
+            ->seeStatusCode(200);
+    }
+
+    private function validationFailedExpectation()
+    {
+        return $this
+            ->json('POST', '/register')
+            ->seeStatusCode(422);
     }
 }
