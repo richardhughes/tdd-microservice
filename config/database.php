@@ -14,9 +14,9 @@ return [
             'collation' => 'utf8_unicode_ci',
         ],
         'testing' => [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => database_path('database.sqlite'),
-            'prefix'   => env('DB_PREFIX', ''),
+            'prefix' => env('DB_PREFIX', ''),
         ]
     ]
 ];
