@@ -42,6 +42,6 @@ class RegisterController extends Controller
 
         $this->user->create($user);
 
-        $this->withSuccessResponse([]);
+        return $this->withSuccessResponse(['token' => 'this-is-a-token']);
     }
 }
