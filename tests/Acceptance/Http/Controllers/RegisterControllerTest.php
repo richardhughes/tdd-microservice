@@ -11,16 +11,6 @@ class RegisterControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testRegisterEndpointExists()
-    {
-        $this->successfulRegisterRequest('securePassword');
-    }
-
-    public function testRegisterEndpointRequiresEmail()
-    {
-        $this->validationFailedExpectation();
-    }
-
     public function testRegisterEndpointRequiredParameters()
     {
         $this->validationFailedExpectation()
