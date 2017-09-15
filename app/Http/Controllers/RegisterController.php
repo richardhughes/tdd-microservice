@@ -49,7 +49,7 @@ class RegisterController extends Controller
         ];
 
         $this->user->create($user);
-$response->setBody($user);
+        $response->setBody($user);
         return $this->successResponse($response);
     }
 }

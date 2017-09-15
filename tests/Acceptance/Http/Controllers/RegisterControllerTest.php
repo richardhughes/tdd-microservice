@@ -6,7 +6,6 @@ use Illuminate\Hashing\BcryptHasher;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery;
 use TestCase;
-use Tymon\JWTAuth\JWTAuth;
 
 class RegisterControllerTest extends TestCase
 {
