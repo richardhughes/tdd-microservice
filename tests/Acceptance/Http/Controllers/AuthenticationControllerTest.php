@@ -2,24 +2,13 @@
 
 namespace Tests\Acceptance\Http\Controllers;
 
-use Carbon\Carbon;
+use App\User;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use TestCase;
 
 class AuthenticationControllerTest extends TestCase
 {
-    public function testCreateAuthenticationTokenEndpointReturnsUsernameAndPassword()
-    {
-        $this
-            ->json('POST', '/authenticate', [
-                'username' => 'richardhughes',
-                'password' => 'securePassword'
-            ])
-            ->seeStatusCode(200)
-            ->seeJson([
-                'username' => 'richardhughes',
-                'password' => 'securePassword',
-            ]);
-    }
+    use DatabaseMigrations;
 
     public function testCreateAuthenticationTokenEndpointReturnsErrorWhenRequiredParametersAreEmpty()
     {
@@ -36,6 +25,42 @@ class AuthenticationControllerTest extends TestCase
                 'password' => [
                     'The password field is required.'
                 ]
+            ]);
+    }
+
+    public function testAuthenticationEndpointReturnsFalseWhenUserNotFound()
+    {
+        $this->authenticateRequest('invalid-user', 'testing123')
+            ->seeStatusCode(200)
+            ->seeJson([
+                'payload' => false
+            ]);
+    }
+
+    public function testAuthenticationEndpointReturnsTrueWhenUserIsFound()
+    {
+        factory(User::class)->create([
+            'username' => 'eeuc40'
+        ]);
+
+        $this->authenticateRequest('eeuc40', 'testing123')
+            ->seeStatusCode(200)
+            ->seeJson([
+                'payload' => true
+            ]);
+    }
+
+    /**
+     * @param $username
+     * @param $password
+     * @return $this
+     */
+    private function authenticateRequest($username, $password)
+    {
+        return $this
+            ->json('POST', '/authenticate', [
+                'username' => $username,
+                'password' => $password
             ]);
     }
 }

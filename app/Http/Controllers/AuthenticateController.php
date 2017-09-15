@@ -3,10 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Response\MetaResponse;
+use App\User;
 use Illuminate\Http\Request;
 
 class AuthenticateController extends Controller
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function store(Request $request, MetaResponse $response)
     {
         $this->validate($request, [
@@ -14,11 +25,14 @@ class AuthenticateController extends Controller
             'password' => 'required|string',
         ]);
 
-        $response->setBody([
-            'token' => 'this-is-a-token',
-            'username' => $request->input('username'),
-            'password' => $request->input('password')]
-        );
+        $response->setBody(true);
+        $user = $this->user
+            ->where('username', $request->input('username'))
+            ->first();
+
+        if (empty($user)) {
+            $response->setBody(false);
+        }
 
         return $this->successResponse($response);
     }

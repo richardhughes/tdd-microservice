@@ -6,7 +6,6 @@ use App\Http\Response\MetaResponse;
 use App\User;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\JWTAuth;
 
 class RegisterController extends Controller
 {
@@ -18,22 +17,16 @@ class RegisterController extends Controller
      * @var BcryptHasher
      */
     private $hasher;
-    /**
-     * @var JWTAuth
-     */
-    private $jwt;
 
     /**
      * RegisterController constructor.
      * @param User $user
      * @param BcryptHasher $hash
-     * @param JWTAuth $jwt
      */
-    public function __construct(User $user, BcryptHasher $hash, JWTAuth $jwt)
+    public function __construct(User $user, BcryptHasher $hash)
     {
         $this->user = $user;
         $this->hasher = $hash;
-        $this->jwt = $jwt;
     }
 
     public function store(Request $request, MetaResponse $response)
