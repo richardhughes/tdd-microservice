@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Response\Contract\Response;
 use Carbon\Carbon;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -17,10 +18,10 @@ class Controller extends BaseController
         $this->carbon = $carbon;
     }
 
-    protected function withSuccessResponse(array $data)
+    protected function successResponse(Response $data)
     {
         return response()
-            ->json($data)
+            ->json($data->toResponse())
             ->setStatusCode(200);
     }
 }

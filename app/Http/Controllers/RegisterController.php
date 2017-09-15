@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Response\MetaResponse;
 use App\User;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class RegisterController extends Controller
         $this->jwt = $jwt;
     }
 
-    public function store(Request $request)
+    public function store(Request $request, MetaResponse $response)
     {
         $this->validate($request, [
             'username' => 'required',
@@ -47,8 +48,8 @@ class RegisterController extends Controller
             'password' => $this->hasher->make($request->input('password'))
         ];
 
-        $user = $this->user->create($user);
-
-        return $this->withSuccessResponse(['token' => $this->jwt->fromUser($user)]);
+        $this->user->create($user);
+$response->setBody($user);
+        return $this->successResponse($response);
     }
 }

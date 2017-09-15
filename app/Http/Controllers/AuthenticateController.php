@@ -2,35 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Http\Response\MetaResponse;
 use Illuminate\Http\Request;
 
 class AuthenticateController extends Controller
 {
-    public function index()
-    {
-        return $this->withSuccessResponse([
-            'token' => 'this-is-a-token',
-            'meta' => [
-                'time' => Carbon::now()->toDateTimeString()
-            ]
-        ]);
-    }
-
-    public function store(Request $request)
+    public function store(Request $request, MetaResponse $response)
     {
         $this->validate($request, [
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        return $this->withSuccessResponse([
+        $response->setBody([
             'token' => 'this-is-a-token',
             'username' => $request->input('username'),
-            'password' => $request->input('password'),
-            'meta' => [
-                'time' => Carbon::now()->toDateTimeString()
-            ]
-        ]);
+            'password' => $request->input('password')]
+        );
+
+        return $this->successResponse($response);
     }
 }
