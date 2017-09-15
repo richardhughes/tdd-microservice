@@ -2,6 +2,7 @@
 
 namespace Tests\Acceptance\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Hashing\BcryptHasher;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery;
@@ -47,6 +48,20 @@ class RegisterControllerTest extends TestCase
             'username' => 'test@example.com',
             'password' => $hashedPassword
         ]);
+    }
+
+    public function testRegisterEndpointReturnsTrueOnSuccess()
+    {
+        Carbon::setTestNow('2017-09-15 20:42:00');
+
+        $this->successfulRegisterRequest('password')
+            ->seeJsonEquals([
+                'payload' => true,
+                'meta' => (object)[
+                    'hash' => md5(true),
+                    'time' => Carbon::now()
+                ]
+            ]);
     }
 
     public function hashedPasswordDataProvider(): array
