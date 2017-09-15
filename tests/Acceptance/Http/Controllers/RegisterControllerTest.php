@@ -58,8 +58,8 @@ class RegisterControllerTest extends TestCase
             ->seeJsonEquals([
                 'payload' => true,
                 'meta' => (object)[
-                    'hash' => md5(true),
-                    'time' => Carbon::now()
+                    'hash' => md5(json_encode(true)),
+                    'time' => Carbon::now()->format('Y-m-d H:i:s')
                 ]
             ]);
     }

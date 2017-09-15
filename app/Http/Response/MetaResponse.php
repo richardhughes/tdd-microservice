@@ -9,7 +9,7 @@ class MetaResponse implements Response
 {
     private $body;
 
-    public function getBody(): array
+    public function getBody()
     {
         return $this->body;
     }
@@ -22,7 +22,7 @@ class MetaResponse implements Response
         ];
     }
 
-    public function setBody(array $body)
+    public function setBody($body)
     {
         $this->body = $body;
     }

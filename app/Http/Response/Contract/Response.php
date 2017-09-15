@@ -4,9 +4,9 @@ namespace App\Http\Response\Contract;
 
 interface Response
 {
-    public function getBody(): array;
+    public function getBody();
 
-    public function setBody(array $body);
+    public function setBody($body);
 
     public function toResponse(): array;
 }
