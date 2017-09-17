@@ -55,23 +55,6 @@ class AuthenticationControllerTest extends TestCase
             ]);
     }
 
-    public function testSuccessfulLoginProvidesJWTToken()
-    {
-        $this->passwordHashExpectation(true);
-
-        factory(User::class)->create([
-            'username' => 'eeuc40'
-        ]);
-
-        $this->authenticateRequest('eeuc40', 'testing123')
-            ->seeStatusCode(200)
-            ->seeJson([
-                'payload' => [
-                    'token' => 'this-is-a-token'
-                ]
-            ]);
-    }
-
     public function testTokenFromJWTLibraryIsGeneratedWhenLoginSuccessful()
     {
         $this->passwordHashExpectation(true);

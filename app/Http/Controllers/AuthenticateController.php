@@ -6,6 +6,7 @@ use App\Http\Response\MetaResponse;
 use App\User;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthenticateController extends Controller
 {
@@ -17,11 +18,16 @@ class AuthenticateController extends Controller
      * @var BcryptHasher
      */
     private $hasher;
+    /**
+     * @var JWTAuth
+     */
+    private $JWTAuth;
 
-    public function __construct(User $user, BcryptHasher $hasher)
+    public function __construct(User $user, BcryptHasher $hasher, JWTAuth $JWTAuth)
     {
         $this->user = $user;
         $this->hasher = $hasher;
+        $this->JWTAuth = $JWTAuth;
     }
 
     public function store(Request $request, MetaResponse $response)
@@ -41,9 +47,9 @@ class AuthenticateController extends Controller
         if (!empty($user)) {
             $passwordValid = $this->hasher->check($request->input('password'), $user->password);
             $responseArray = $passwordValid;
-            if($passwordValid){
+            if ($passwordValid) {
                 $responseArray = [
-                    'token' => 'this-is-a-token'
+                    'token' => $this->JWTAuth->fromUser($user)
                 ];
             }
             $response->setBody($responseArray);
