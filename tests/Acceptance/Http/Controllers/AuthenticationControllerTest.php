@@ -3,7 +3,9 @@
 namespace Tests\Acceptance\Http\Controllers;
 
 use App\User;
+use Illuminate\Hashing\BcryptHasher;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use Mockery;
 use TestCase;
 
 class AuthenticationControllerTest extends TestCase
@@ -37,8 +39,16 @@ class AuthenticationControllerTest extends TestCase
             ]);
     }
 
-    public function testAuthenticationEndpointReturnsTrueWhenUserIsFound()
+    public function testAuthenticationEndpointReturnsFalseOnWrongPassword()
     {
+        $hash = Mockery::mock(BcryptHasher::class);
+        $hash
+            ->shouldReceive('check')
+            ->once()
+            ->andReturn(false);
+
+        $this->app->instance(BcryptHasher::class, $hash);
+
         factory(User::class)->create([
             'username' => 'eeuc40'
         ]);
@@ -46,7 +56,30 @@ class AuthenticationControllerTest extends TestCase
         $this->authenticateRequest('eeuc40', 'testing123')
             ->seeStatusCode(200)
             ->seeJson([
-                'payload' => true
+                'payload' => false
+            ]);
+    }
+
+    public function testSuccessfulLoginProvidesJWTToken()
+    {
+        $hash = Mockery::mock(BcryptHasher::class);
+        $hash
+            ->shouldReceive('check')
+            ->once()
+            ->andReturn(true);
+
+        $this->app->instance(BcryptHasher::class, $hash);
+
+        factory(User::class)->create([
+            'username' => 'eeuc40'
+        ]);
+
+        $this->authenticateRequest('eeuc40', 'testing123')
+            ->seeStatusCode(200)
+            ->seeJson([
+                'payload' => [
+                    'token' => 'this-is-a-token'
+                ]
             ]);
     }
 
