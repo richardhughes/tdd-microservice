@@ -11,6 +11,6 @@ class Controller extends BaseController
     {
         return response()
             ->json($data->toResponse())
-            ->setStatusCode(200);
+            ->setStatusCode(Response::HTTP_OK);
     }
 }
