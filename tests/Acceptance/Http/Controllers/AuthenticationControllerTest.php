@@ -7,6 +7,7 @@ use Illuminate\Hashing\BcryptHasher;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Mockery;
 use TestCase;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthenticationControllerTest extends TestCase
 {
@@ -41,13 +42,7 @@ class AuthenticationControllerTest extends TestCase
 
     public function testAuthenticationEndpointReturnsFalseOnWrongPassword()
     {
-        $hash = Mockery::mock(BcryptHasher::class);
-        $hash
-            ->shouldReceive('check')
-            ->once()
-            ->andReturn(false);
-
-        $this->app->instance(BcryptHasher::class, $hash);
+        $this->passwordHashExpectation(false);
 
         factory(User::class)->create([
             'username' => 'eeuc40'
@@ -62,13 +57,7 @@ class AuthenticationControllerTest extends TestCase
 
     public function testSuccessfulLoginProvidesJWTToken()
     {
-        $hash = Mockery::mock(BcryptHasher::class);
-        $hash
-            ->shouldReceive('check')
-            ->once()
-            ->andReturn(true);
-
-        $this->app->instance(BcryptHasher::class, $hash);
+        $this->passwordHashExpectation(true);
 
         factory(User::class)->create([
             'username' => 'eeuc40'
@@ -79,6 +68,33 @@ class AuthenticationControllerTest extends TestCase
             ->seeJson([
                 'payload' => [
                     'token' => 'this-is-a-token'
+                ]
+            ]);
+    }
+
+    public function testTokenFromJWTLibraryIsGeneratedWhenLoginSuccessful()
+    {
+        $this->passwordHashExpectation(true);
+
+        $token = 'this-is-a-jwt-token';
+
+        $jwt = Mockery::mock(JWTAuth::class);
+        $jwt
+            ->shouldReceive('fromUser')
+            ->once()
+            ->andReturn($token);
+
+        $this->app->instance(JWTAuth::class, $jwt);
+
+        factory(User::class)->create([
+            'username' => 'eeuc40'
+        ]);
+
+        $this->authenticateRequest('eeuc40', 'testing123')
+            ->seeStatusCode(200)
+            ->seeJson([
+                'payload' => [
+                    'token' => $token
                 ]
             ]);
     }
@@ -95,5 +111,16 @@ class AuthenticationControllerTest extends TestCase
                 'username' => $username,
                 'password' => $password
             ]);
+    }
+
+    private function passwordHashExpectation(bool $return)
+    {
+        $hash = Mockery::mock(BcryptHasher::class);
+        $hash
+            ->shouldReceive('check')
+            ->once()
+            ->andReturn($return);
+
+        $this->app->instance(BcryptHasher::class, $hash);
     }
 }
